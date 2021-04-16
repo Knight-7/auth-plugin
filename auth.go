@@ -9,8 +9,8 @@ import (
 
 // Config auth plugin's configuration
 type Config struct {
-	CasbinModelPath  string `json:"casbinModelPath,omitempty"`
-	CasbinPolicyPath string `json:"casbinPolicyPath,omitempty"`
+	ModelPath  string `json:"modelPath,omitempty"`
+	PolicyPath string `json:"policyPath,omitempty"`
 }
 
 // CreateConfig create auth plugin's configuration
@@ -27,14 +27,14 @@ type Plugin struct {
 
 // New create a new auth plugin
 func New(ctx context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
-	if config.CasbinModelPath == "" {
-		config.CasbinModelPath = "./model.conf"
+	if config.ModelPath == "" {
+		config.ModelPath = "./model.conf"
 	}
-	if config.CasbinPolicyPath == "" {
-		config.CasbinPolicyPath = "./policy.csv"
+	if config.PolicyPath == "" {
+		config.PolicyPath = "./policy.csv"
 	}
 
-	e, err := casbin.NewEnforcer(config.CasbinModelPath, config.CasbinPolicyPath)
+	e, err := casbin.NewEnforcer(config.ModelPath, config.PolicyPath)
 	if err != nil {
 		return nil, err
 	}
@@ -67,16 +67,3 @@ func (p *Plugin) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	p.next.ServeHTTP(rw, req)
 }
-
-/*
-func unauthorized(rw http.ResponseWriter, err error) {
-	rw.Header().Set("Content-Type", "application/json")
-	data := map[string]interface{}{
-		"code": http.StatusUnauthorized,
-		"msg":  err.Error(),
-	}
-
-	byteData, err := json.Marshal(data)
-	rw.Write(byteData)
-}
-*/
