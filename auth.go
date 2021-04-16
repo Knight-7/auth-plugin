@@ -8,10 +8,7 @@ import (
 )
 
 // Config auth plugin's configuration
-type Config struct {
-	ModelPath  string `json:"modelPath,omitempty"`
-	PolicyPath string `json:"policyPath,omitempty"`
-}
+type Config struct {}
 
 // CreateConfig create auth plugin's configuration
 func CreateConfig() *Config {
@@ -27,6 +24,7 @@ type Plugin struct {
 
 // New create a new auth plugin
 func New(ctx context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
+	/*
 	if config.ModelPath == "" {
 		config.ModelPath = "./model.conf"
 	}
@@ -34,7 +32,9 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 		config.PolicyPath = "./policy.csv"
 	}
 
-	e, err := casbin.NewEnforcer(config.ModelPath, config.PolicyPath)
+	 */
+
+	e, err := casbin.NewEnforcer("./model.conf", "./policy.csv")
 	if err != nil {
 		return nil, err
 	}
