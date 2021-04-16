@@ -1,6 +1,5 @@
 package auth_plugin
 
-
 import (
 	"context"
 	"net/http"
@@ -8,9 +7,14 @@ import (
 	"github.com/casbin/casbin/v2"
 )
 
+const (
+	HeaderKey    = "Authorization"
+	HeaderPrefix = "Bearer"
+)
+
 // Config auth plugin's configuration
 type Config struct {
-	ModelPath string `json:"modelPath,omitempty"`
+	ModelPath  string `json:"modelPath,omitempty"`
 	PolicyPath string `json:"policyPath,omitempty"`
 }
 
@@ -48,13 +52,13 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 }
 
 func (p *Plugin) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	authorization := req.Header.Get("Authorization")
+	authorization := req.Header.Get(HeaderKey)
 	if authorization == "" {
 		rw.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
-	claims, err := ParseToken(authorization[len("Bearer")+1:])
+	claims, err := ParseToken(authorization[len(HeaderPrefix)+1:])
 	if err != nil {
 		rw.WriteHeader(http.StatusUnauthorized)
 		return
