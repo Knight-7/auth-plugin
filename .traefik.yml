@@ -8,7 +8,7 @@ type: middleware
 import: github.com/Knight-7/auth-plugin
 
 # A brief description of what your plugin is doing.
-summary: use jwt+casbin authorize
+summary: 'use jwt+casbin authorize'
 
 # Configuration data for your plugin.
 # This is mandatory,
