@@ -1,6 +1,6 @@
 package auth_plugin
 
-/*
+
 import (
 	"context"
 	"net/http"
@@ -9,7 +9,10 @@ import (
 )
 
 // Config auth plugin's configuration
-type Config struct {}
+type Config struct {
+	ModelPath string `json:"modelPath,omitempty"`
+	PolicyPath string `json:"policyPath,omitempty"`
+}
 
 // CreateConfig create auth plugin's configuration
 func CreateConfig() *Config {
@@ -35,7 +38,7 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 
 
 
-	e, err := casbin.NewEnforcer("./model.conf", "./policy.csv")
+	e, err := casbin.NewEnforcer(config.ModelPath, config.PolicyPath)
 	if err != nil {
 		return nil, err
 	}
@@ -67,38 +70,4 @@ func (p *Plugin) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	}
 
 	p.next.ServeHTTP(rw, req)
-}
-*/
-
-import (
-	"context"
-	"net/http"
-)
-
-// Config the plugin configuration.
-type Config struct {
-}
-
-// CreateConfig creates the default plugin configuration.
-func CreateConfig() *Config {
-	return &Config{}
-}
-
-// Demo a Demo plugin.
-type Demo struct {
-	next http.Handler
-	name string
-}
-
-// New created a new Demo plugin.
-func New(ctx context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
-	return &Demo{
-		next: next,
-		name: name,
-	}, nil
-}
-
-func (a *Demo) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	rw.Header().Set("middleware", "demo")
-	a.next.ServeHTTP(rw, req)
 }

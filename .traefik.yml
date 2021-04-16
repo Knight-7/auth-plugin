@@ -14,3 +14,5 @@ summary: use jwt+casbin authorize
 # This is mandatory,
 # and Traefik Pilot will try to execute the plugin with the data you provide as part of its startup validity tests.
 testData:
+  modelPath: './model.conf'
+  policyPath: './policy.csv'
