@@ -1,5 +1,6 @@
 package auth_plugin
 
+/*
 import (
 	"errors"
 	"time"
@@ -54,4 +55,4 @@ func ParseToken(tokenString string) (*MyClaims, error) {
 	}
 
 	return nil, errors.New("invalid token")
-}
+}*/
