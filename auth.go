@@ -28,15 +28,12 @@ type Plugin struct {
 
 // New create a new auth plugin
 func New(ctx context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
-
 	if config.ModelPath == "" {
 		config.ModelPath = "./model.conf"
 	}
 	if config.PolicyPath == "" {
 		config.PolicyPath = "./policy.csv"
 	}
-
-
 
 	e, err := casbin.NewEnforcer(config.ModelPath, config.PolicyPath)
 	if err != nil {
